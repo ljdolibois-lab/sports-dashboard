@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Sports Brief — Tuesday, July 28, 2026</title>
+<style>
+  :root{
+    --bg:#0b0d10; --panel:#14171c; --panel-2:#191d23; --line:#252a32;
+    --ink:#e9edf2; --ink-dim:#9aa4b2; --ink-faint:#69727f;
+    --accent:#4ea1ff; --hot:#ff8a3d; --gold:#ffc94a; --win:#3ddc97;
+    --r:14px;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --panel:#fff; --panel-2:#fafbfc; --line:#e4e7ec;
+           --ink:#12161c; --ink-dim:#5a6472; --ink-faint:#8a93a1; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+  header{display:flex;align-items:baseline;justify-content:space-between;
+         gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-size:26px;letter-spacing:-.02em;margin:0;font-weight:650}
+  .sub{color:var(--ink-faint);font-size:13px}
+  h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-faint);font-weight:600;margin:38px 0 14px;
+     display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* ---- standouts ---- */
+  .standouts{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:12px}
+  .perf{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        padding:14px 15px;position:relative;overflow:hidden;display:flex;gap:12px}
+  .perf::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+  .perf.tier-hot::before{background:var(--hot)}
+  .perf.tier-elite::before{background:var(--gold)}
+  .pic{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:0 0 auto;
+       background:var(--panel-2);border:1px solid var(--line)}
+  .pbody{min-width:0;flex:1}
+  .pname{font-weight:620;font-size:15px;letter-spacing:-.01em}
+  .pmeta{color:var(--ink-faint);font-size:11.5px;margin-top:1px;
+         text-transform:uppercase;letter-spacing:.05em}
+  .pline{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--ink-dim);margin-top:7px}
+  .why{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+  .why span{font-size:11px;padding:2.5px 7px;border-radius:999px;
+            background:color-mix(in srgb,var(--accent) 14%,transparent);
+            color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+  .tier-hot .why span{background:color-mix(in srgb,var(--hot) 14%,transparent);
+            color:var(--hot);border-color:color-mix(in srgb,var(--hot) 30%,transparent)}
+  .tier-elite .why span{background:color-mix(in srgb,var(--gold) 15%,transparent);
+            color:var(--gold);border-color:color-mix(in srgb,var(--gold) 32%,transparent)}
+
+  /* ---- scores ---- */
+  .lg{margin-bottom:22px}
+  .lgname{font-size:13px;font-weight:640;color:var(--ink-dim);margin:0 0 8px 2px}
+  .scores{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:10px}
+  .game{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+        padding:11px 13px;text-decoration:none;color:inherit;display:block;
+        transition:border-color .15s,transform .15s}
+  .game:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .row{display:flex;align-items:center;gap:9px;padding:3px 0}
+  .row img{width:19px;height:19px;object-fit:contain}
+  .tn{flex:1;font-size:13.5px;color:var(--ink-dim);min-width:0;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .row.w .tn{color:var(--ink);font-weight:620}
+  .sc{font-variant-numeric:tabular-nums;font-weight:640;font-size:15px;color:var(--ink-dim)}
+  .row.w .sc{color:var(--win)}
+  .gstat{font-size:10.5px;color:var(--ink-faint);margin-top:6px;
+         border-top:1px solid var(--line);padding-top:6px;
+         text-transform:uppercase;letter-spacing:.06em}
+
+  /* ---- stories ---- */
+  .news{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+  .story{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+         overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;
+         transition:border-color .15s}
+  .story:hover{border-color:var(--accent)}
+  .story img{width:100%;height:132px;object-fit:cover;background:var(--panel-2)}
+  .stxt{padding:12px 13px 14px}
+  .stag{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .stitle{font-weight:610;margin-top:5px;font-size:14.5px;line-height:1.35;letter-spacing:-.01em}
+  .sdesc{color:var(--ink-faint);font-size:12.5px;margin-top:6px;line-height:1.45}
+
+  .empty{color:var(--ink-faint);font-size:13.5px;background:var(--panel);
+         border:1px dashed var(--line);border-radius:12px;padding:16px}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--ink-faint);font-size:11.5px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Daily Sports Brief</h1>
+    <div class="sub">Results for Tuesday, July 28, 2026 &nbsp;·&nbsp; built 10:56 AM CDT</div>
+  </header>
+
+  <h2>Standout performances</h2>
+  
+  <div class="standouts">
+    
+    <a class="perf tier-hot"
+       href="https://www.espn.com/mlb/game/_/gameId/401816294/orioles-tigers" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/5133392.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Eduardo Valencia</div>
+        <div class="pmeta">DET · MLB · BAL @ DET</div>
+        <div class="pline">4-5, 2 HR, 4 RBI</div>
+        <div class="why"><span>2 home runs</span><span>4 hits</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816303/rockies-padres" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/35983.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Fernando Tatis Jr.</div>
+        <div class="pmeta">SD · MLB · COL @ SD</div>
+        <div class="pline">5-5, 0 HR, 2 RBI</div>
+        <div class="why"><span>5 hits</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816306/mariners-dodgers" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/4345621.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Dominic Canzone</div>
+        <div class="pmeta">SEA · MLB · SEA @ LAD</div>
+        <div class="pline">2-4, 2 HR, 3 RBI</div>
+        <div class="why"><span>2 home runs</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816295/guardians-reds" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/4345076.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Gavin Williams</div>
+        <div class="pmeta">CLE · MLB · CLE @ CIN</div>
+        <div class="pline">7 IP, 3 H, 2 ER, 1 BB, 12 K</div>
+        <div class="why"><span>12 strikeouts</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816292/diamondbacks-pirates" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/4721302.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Brandon Pfaadt</div>
+        <div class="pmeta">ARI · MLB · ARI @ PIT</div>
+        <div class="pline">7 IP, 6 H, 0 ER, 1 BB, 4 K</div>
+        <div class="why"><span>7 scoreless innings</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816294/orioles-tigers" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/5294127.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Troy Melton</div>
+        <div class="pmeta">DET · MLB · BAL @ DET</div>
+        <div class="pline">7 IP, 3 H, 0 ER, 2 BB, 5 K</div>
+        <div class="why"><span>7 scoreless innings</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/mlb/game/_/gameId/401816296/phillies-marlins" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/mlb/players/full/35241.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Sandy Alcantara</div>
+        <div class="pmeta">MIA · MLB · PHI @ MIA</div>
+        <div class="pline">7 IP, 4 H, 0 ER, 1 BB, 5 K</div>
+        <div class="why"><span>7 scoreless innings</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/wnba/game/_/gameId/401857094/fever-storm" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/wnba/players/full/4433403.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Caitlin Clark</div>
+        <div class="pmeta">IND · WNBA · IND @ SEA</div>
+        <div class="pline">32 PTS, 4 REB, 7 AST</div>
+        <div class="why"><span>32 points</span></div>
+      </div>
+    </a>
+    
+    <a class="perf "
+       href="https://www.espn.com/wnba/game/_/gameId/401857094/fever-storm" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      
+      <img class="pic" src="https://a.espncdn.com/i/headshots/wnba/players/full/3906753.png" alt="" loading="lazy"
+           onerror="this.remove()">
+      <div class="pbody">
+        <div class="pname">Natisha Hiedeman</div>
+        <div class="pmeta">SEA · WNBA · IND @ SEA</div>
+        <div class="pline">33 PTS, 6 REB, 4 AST</div>
+        <div class="why"><span>33 points</span></div>
+      </div>
+    </a>
+    
+  </div>
+  
+
+  <h2>Final scores</h2>
+  
+    
+    <div class="lg">
+      <div class="lgname">MLB <span style="color:var(--ink-faint);font-weight:400">· 15</span></div>
+      <div class="scores">
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401901849/guardians-reds" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/cle.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Cleveland Guardians</span><span class="sc">6</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/cin.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Cincinnati Reds</span><span class="sc">5</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816292/diamondbacks-pirates" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/ari.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Arizona Diamondbacks</span><span class="sc">8</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/pit.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Pittsburgh Pirates</span><span class="sc">7</span>
+          </div>
+          <div class="gstat">Final/12</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816294/orioles-tigers" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/bal.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Baltimore Orioles</span><span class="sc">0</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/det.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Detroit Tigers</span><span class="sc">14</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816296/phillies-marlins" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/phi.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Philadelphia Phillies</span><span class="sc">0</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/mia.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Miami Marlins</span><span class="sc">1</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816297/rangers-rays" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/tex.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Texas Rangers</span><span class="sc">4</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/tb.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Tampa Bay Rays</span><span class="sc">1</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816298/blue-jays-nationals" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/tor.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Toronto Blue Jays</span><span class="sc">6</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/wsh.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Washington Nationals</span><span class="sc">8</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816295/guardians-reds" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/cle.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Cleveland Guardians</span><span class="sc">0</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/cin.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Cincinnati Reds</span><span class="sc">2</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816300/royals-twins" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/kc.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Kansas City Royals</span><span class="sc">2</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/min.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Minnesota Twins</span><span class="sc">3</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816301/yankees-white-sox" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/nyy.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">New York Yankees</span><span class="sc">3</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/chw.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Chicago White Sox</span><span class="sc">2</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816299/cubs-cardinals" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/chc.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Chicago Cubs</span><span class="sc">10</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/stl.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">St. Louis Cardinals</span><span class="sc">2</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816304/astros-angels" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/hou.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Houston Astros</span><span class="sc">3</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/laa.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Los Angeles Angels</span><span class="sc">2</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816302/red-sox-athletics" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/bos.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Boston Red Sox</span><span class="sc">3</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/ath.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Athletics</span><span class="sc">4</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816303/rockies-padres" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/col.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Colorado Rockies</span><span class="sc">7</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/sd.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">San Diego Padres</span><span class="sc">8</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816305/brewers-giants" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/mil.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Milwaukee Brewers</span><span class="sc">8</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/sf.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">San Francisco Giants</span><span class="sc">2</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/mlb/game/_/gameId/401816306/mariners-dodgers" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/sea.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Seattle Mariners</span><span class="sc">7</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/lad.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Los Angeles Dodgers</span><span class="sc">6</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+      </div>
+    </div>
+    
+    <div class="lg">
+      <div class="lgname">WNBA <span style="color:var(--ink-faint);font-weight:400">· 5</span></div>
+      <div class="scores">
+        
+        <a class="game" href="https://www.espn.com/wnba/game/_/gameId/401857092/sun-mystics" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/con.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Connecticut Sun</span><span class="sc">84</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/scoreboard/wsh.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Washington Mystics</span><span class="sc">92</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/wnba/game/_/gameId/401857093/tempo-lynx" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/tor.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Toronto Tempo</span><span class="sc">93</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/min.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Minnesota Lynx</span><span class="sc">100</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/wnba/game/_/gameId/401857094/fever-storm" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/ind.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Indiana Fever</span><span class="sc">105</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/scoreboard/sea.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Seattle Storm</span><span class="sc">95</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/wnba/game/_/gameId/401857095/fire-aces" target="_blank" rel="noopener">
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/scoreboard/por.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Portland Fire</span><span class="sc">83</span>
+          </div>
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/lv.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Las Vegas Aces</span><span class="sc">98</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+        <a class="game" href="https://www.espn.com/wnba/game/_/gameId/401857096/liberty-sparks" target="_blank" rel="noopener">
+          <div class="row w">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/ny.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">New York Liberty</span><span class="sc">113</span>
+          </div>
+          <div class="row ">
+            <img src="https://a.espncdn.com/i/teamlogos/wnba/500/la.png" alt="" loading="lazy" onerror="this.remove()">
+            <span class="tn">Los Angeles Sparks</span><span class="sc">109</span>
+          </div>
+          <div class="gstat">Final</div>
+        </a>
+        
+      </div>
+    </div>
+    
+  
+
+  <h2>Top stories</h2>
+  
+  <div class="news">
+    
+    <a class="story" href="https://www.espn.com/mlb/story/_/id/49410877/2026-mlb-trade-deadline-tracker-rumors-alerts-news-latest-updates-analysis" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0723/r1691797_608x342_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">MLB</div>
+        <div class="stitle">2026 MLB trade deadline tracker: Rumors, news, analysis</div>
+        <div class="sdesc">Which contenders will make the biggest splash? Here's what we're hearing as 6 p.m. ET on Aug. 3 approaches.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/nfl/story/_/id/49419620/detroit-lions-training-camp-2026-intel-updates" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0729/r1695137_608x342_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NFL</div>
+        <div class="stitle">2026 Detroit Lions training camp: Latest intel, updates</div>
+        <div class="sdesc">Follow our daily updates from Lions training camp, including intel on QBs, position battles and potential breakouts.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/video/clip/_/id/49480338/perk-says-draymond-lebron-take-delusional" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/media/motion/2026/0729/ss_20260729_112718126_3606620/ss_20260729_112718126_3606620.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NBA</div>
+        <div class="stitle">Perk says Draymond's LeBron take is 'delusional'</div>
+        <div class="sdesc">Perk says Draymond's LeBron take is 'delusional'</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/wnba/story/_/id/49477384/indiana-fever-do-not-answer-questions-pro-sophie-cunningham-rally-seattle" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0729/r1695026_600x400_3-2.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">WNBA</div>
+        <div class="stitle">Fever do not answer questions about pro-Sophie Cunningham rally</div>
+        <div class="sdesc">Sophie Cunningham and Caitlin Clark were not made available to answer postgame questions about a rally before the Fever's 105-95 win over the Storm on Tuesday night in support of Cunningham's recent comments about transgender athletes.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/nhl/story/_/id/49480184/sharks-sign-macklin-celebrini-five-year-94m-extension" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2025/1217/r1590437_1296x729_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NHL</div>
+        <div class="stitle">Sharks sign Macklin Celebrini to five-year, $94M extension</div>
+        <div class="sdesc">The $18.8 million average annual value on his five-year extension will make Macklin Celebrini the highest-paid player in the NHL.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/college-football/story/_/id/49480319/tennessee-arion-carter-suspended-2-games-427-flight" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2024/1015/r1401019_1296x729_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">College Football</div>
+        <div class="stitle">Tennessee's Arion Carter suspended 2 games over $427 flight</div>
+        <div class="sdesc">The NCAA has suspended Tennessee linebacker Arion Carter for the first two games of the season for accepting a $427 flight from an agent after he declared for the NFL draft.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/soccer/story/_/id/49477597/transfer-rumors-news-liverpool-paris-saint-germain-bradley-barcola-personal-terms" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0729/r1695138_1296x729_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">Premier League</div>
+        <div class="stitle">Transfer rumors, news: Everton's Ndiaye on Man United radar</div>
+        <div class="sdesc">Manchester United are considering a move for Everton forward Iliman Ndiaye. Transfer Talk has the latest.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/fantasy/baseball/story/_/id/31165089/fantasy-baseball-forecaster-team-hitting-stolen-base-ratings-platoon-matchups-daily-weekly-leagues" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2022/0406/r996173_576x324_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">MLB</div>
+        <div class="stitle">Fantasy baseball forecaster: Team hitting ratings</div>
+        <div class="sdesc">Stay ahead of the game and optimize your fantasy baseball hitters with our forecaster, which provides a rolling 10-day outlook of every team's hitting matchups as well as the potential for stolen bases.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/nfl/story/_/id/49480322/ravens-madubuike-neck-practices-1st-10-months" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0302/r1622161_600x400_3-2.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NFL</div>
+        <div class="stitle">Ravens' Madubuike (neck) practices for 1st time in 10 months</div>
+        <div class="sdesc">Pro Bowl defensive tackle Nnamdi Madubuike practiced for the first time in 10 months on Wednesday, which provided a celebratory start to the Ravens' first training camp under coach Jesse Minter.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/nba/story/_/id/47168192/the-hoop-collective-latest-episodes-brian-windhorst-nba-podcast-archive-best-quotes" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2025/1112/r1574751_608x342_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NBA</div>
+        <div class="stitle">'The Hoop Collective': Episodes of Brian Windhorst's NBA podcast</div>
+        <div class="sdesc">Here are the top highlights from Brian Windhorst's "The Hoop Collective" podcast, from breaking news to the latest intel and reaction from around the NBA.</div>
+      </div>
+    </a>
+    
+    <a class="story" href="http://www.espn.com/wnba/preview?gameId=401857100" target="_blank" rel="noopener">
+      <img src="https://s.espncdn.com/stitcher/sports/basketball/wnba/events/401857100.png?templateId=espn.applewatch.awayhome.1" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">WNBA</div>
+        <div class="stitle">Connecticut visits Chicago following Taylor's 31-point game</div>
+        <div class="sdesc">Connecticut Sun (7-21, 2-10 Eastern Conference) at Chicago Sky (9-18, 1-9 Eastern Conference)</div>
+      </div>
+    </a>
+    
+    <a class="story" href="https://www.espn.com/nhl/story/_/id/49235590/nhl-free-agency-tracker-2026-contracts-teams-analysis-updates" target="_blank" rel="noopener">
+      <img src="https://a.espncdn.com/photo/2026/0104/r1596406_1296x729_16-9.jpg" alt="" loading="lazy">
+      <div class="stxt">
+        <div class="stag">NHL</div>
+        <div class="stitle">2026 NHL free agency tracker: News, contracts, grades, buzz</div>
+        <div class="sdesc">Get up to speed on all the latest veteran additions teams are making beginning on June 30.</div>
+      </div>
+    </a>
+    
+  </div>
+  
+
+  <footer>
+    Data: ESPN public JSON endpoints. Standouts are computed from box-score lines,
+    not from headlines — see <code>src/standouts.py</code> to tune thresholds.
+    
+  </footer>
+
+</div>
+</body>
+</html>

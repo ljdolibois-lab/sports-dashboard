@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }} — {{ date_human }}</title>
+<style>
+  :root{
+    --bg:#0b0d10; --panel:#14171c; --panel-2:#191d23; --line:#252a32;
+    --ink:#e9edf2; --ink-dim:#9aa4b2; --ink-faint:#69727f;
+    --accent:#4ea1ff; --hot:#ff8a3d; --gold:#ffc94a; --win:#3ddc97;
+    --r:14px;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --panel:#fff; --panel-2:#fafbfc; --line:#e4e7ec;
+           --ink:#12161c; --ink-dim:#5a6472; --ink-faint:#8a93a1; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+  header{display:flex;align-items:baseline;justify-content:space-between;
+         gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-size:26px;letter-spacing:-.02em;margin:0;font-weight:650}
+  .sub{color:var(--ink-faint);font-size:13px}
+  h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-faint);font-weight:600;margin:38px 0 14px;
+     display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* ---- standouts ---- */
+  .standouts{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:12px}
+  .perf{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        padding:14px 15px;position:relative;overflow:hidden;display:flex;gap:12px}
+  .perf::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+  .perf.tier-hot::before{background:var(--hot)}
+  .perf.tier-elite::before{background:var(--gold)}
+  .pic{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:0 0 auto;
+       background:var(--panel-2);border:1px solid var(--line)}
+  .pbody{min-width:0;flex:1}
+  .pname{font-weight:620;font-size:15px;letter-spacing:-.01em}
+  .pmeta{color:var(--ink-faint);font-size:11.5px;margin-top:1px;
+         text-transform:uppercase;letter-spacing:.05em}
+  .pline{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--ink-dim);margin-top:7px}
+  .why{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+  .why span{font-size:11px;padding:2.5px 7px;border-radius:999px;
+            background:color-mix(in srgb,var(--accent) 14%,transparent);
+            color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+  .tier-hot .why span{background:color-mix(in srgb,var(--hot) 14%,transparent);
+            color:var(--hot);border-color:color-mix(in srgb,var(--hot) 30%,transparent)}
+  .tier-elite .why span{background:color-mix(in srgb,var(--gold) 15%,transparent);
+            color:var(--gold);border-color:color-mix(in srgb,var(--gold) 32%,transparent)}
+
+  /* ---- scores ---- */
+  .lg{margin-bottom:22px}
+  .lgname{font-size:13px;font-weight:640;color:var(--ink-dim);margin:0 0 8px 2px}
+  .scores{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:10px}
+  .game{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+        padding:11px 13px;text-decoration:none;color:inherit;display:block;
+        transition:border-color .15s,transform .15s}
+  .game:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .row{display:flex;align-items:center;gap:9px;padding:3px 0}
+  .row img{width:19px;height:19px;object-fit:contain}
+  .tn{flex:1;font-size:13.5px;color:var(--ink-dim);min-width:0;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .row.w .tn{color:var(--ink);font-weight:620}
+  .sc{font-variant-numeric:tabular-nums;font-weight:640;font-size:15px;color:var(--ink-dim)}
+  .row.w .sc{color:var(--win)}
+  .gstat{font-size:10.5px;color:var(--ink-faint);margin-top:6px;
+         border-top:1px solid var(--line);padding-top:6px;
+         text-transform:uppercase;letter-spacing:.06em}
+
+  /* ---- stories ---- */
+  .news{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+  .story{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+         overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;
+         transition:border-color .15s}
+  .story:hover{border-color:var(--accent)}
+  .story img{width:100%;height:132px;object-fit:cover;background:var(--panel-2)}
+  .stxt{padding:12px 13px 14px}
+  .stag{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .stitle{font-weight:610;margin-top:5px;font-size:14.5px;line-height:1.35;letter-spacing:-.01em}
+  .sdesc{color:var(--ink-faint);font-size:12.5px;margin-top:6px;line-height:1.45}
+
+  .empty{color:var(--ink-faint);font-size:13.5px;background:var(--panel);
+         border:1px dashed var(--line);border-radius:12px;padding:16px}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--ink-faint);font-size:11.5px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>{{ title }}</h1>
+    <div class="sub">Results for {{ date_human }} &nbsp;·&nbsp; built {{ generated_at }}</div>
+  </header>
+
+  <h2>Standout performances</h2>
+  {% if standouts %}
+  <div class="standouts">
+    {% for p in standouts %}
+    <a class="perf {{ 'tier-elite' if p.score >= 85 else ('tier-hot' if p.score >= 65 else '') }}"
+       href="{{ p.game_link or '#' }}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+      {# hide the avatar entirely if the image 404s, rather than leaving a grey hole #}
+      {% if p.headshot %}<img class="pic" src="{{ p.headshot }}" alt="" loading="lazy"
+           onerror="this.remove()">{% endif %}
+      <div class="pbody">
+        <div class="pname">{{ p.player }}</div>
+        <div class="pmeta">{{ p.team }} · {{ p.league }} · {{ p.game }}</div>
+        <div class="pline">{{ p.line }}</div>
+        <div class="why">{% for r in p.reasons %}<span>{{ r }}</span>{% endfor %}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No performances cleared the threshold. Either a quiet slate, or your
+  <code>standouts.min_score</code> is set too high.</div>
+  {% endif %}
+
+  <h2>Final scores</h2>
+  {% if games_by_league %}
+    {% for league, games in games_by_league %}
+    <div class="lg">
+      <div class="lgname">{{ league }} <span style="color:var(--ink-faint);font-weight:400">· {{ games|length }}</span></div>
+      <div class="scores">
+        {% for g in games %}
+        <a class="game" href="{{ g.link or '#' }}" target="_blank" rel="noopener">
+          <div class="row {{ 'w' if g.away.winner }}">
+            {% if g.away.logo %}<img src="{{ g.away.logo }}" alt="" loading="lazy" onerror="this.remove()">{% endif %}
+            <span class="tn">{{ g.away.name }}</span><span class="sc">{{ g.away.score if g.away.score is not none else '–' }}</span>
+          </div>
+          <div class="row {{ 'w' if g.home.winner }}">
+            {% if g.home.logo %}<img src="{{ g.home.logo }}" alt="" loading="lazy" onerror="this.remove()">{% endif %}
+            <span class="tn">{{ g.home.name }}</span><span class="sc">{{ g.home.score if g.home.score is not none else '–' }}</span>
+          </div>
+          <div class="gstat">{{ g.status }}</div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="empty">No completed games found for {{ date_human }}.</div>
+  {% endif %}
+
+  <h2>Top stories</h2>
+  {% if stories %}
+  <div class="news">
+    {% for s in stories %}
+    <a class="story" href="{{ s.link }}" target="_blank" rel="noopener">
+      {% if s.image %}<img src="{{ s.image }}" alt="" loading="lazy">{% endif %}
+      <div class="stxt">
+        <div class="stag">{{ s.league }}</div>
+        <div class="stitle">{{ s.title }}</div>
+        {% if s.description %}<div class="sdesc">{{ s.description }}</div>{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No stories retrieved.</div>
+  {% endif %}
+
+  <footer>
+    Data: ESPN public JSON endpoints. Standouts are computed from box-score lines,
+    not from headlines — see <code>src/standouts.py</code> to tune thresholds.
+    {% if errors %}<br>Warnings: {{ errors|join('; ') }}{% endif %}
+  </footer>
+
+</div>
+</body>
+</html>

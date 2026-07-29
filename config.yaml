@@ -1,0 +1,113 @@
+# Sports Dashboard config.
+# Turn leagues on/off here. Out-of-season leagues cost one cheap API call
+# and simply render nothing, so leaving them enabled year-round is fine.
+
+leagues:
+  # --- Big 4 US ---
+  - key: mlb
+    label: MLB
+    path: baseball/mlb
+    kind: baseball
+    enabled: true
+  - key: nfl
+    label: NFL
+    path: football/nfl
+    kind: football
+    enabled: true
+  - key: nba
+    label: NBA
+    path: basketball/nba
+    kind: basketball
+    enabled: true
+  - key: nhl
+    label: NHL
+    path: hockey/nhl
+    kind: hockey
+    enabled: true
+
+  # --- Women's / college ---
+  - key: wnba
+    label: WNBA
+    path: basketball/wnba
+    kind: basketball
+    enabled: true
+  - key: cfb
+    label: College Football
+    path: football/college-football
+    kind: football
+    enabled: true
+    # College slates are huge. Only show games where a ranked team plays
+    # or the final was close, unless you want all 60.
+    top_only: true
+  - key: cbb
+    label: Men's College Basketball
+    path: basketball/mens-college-basketball
+    kind: basketball
+    enabled: true
+    top_only: true
+  - key: wcbb
+    label: Women's College Basketball
+    path: basketball/womens-college-basketball
+    kind: basketball
+    enabled: false
+    top_only: true
+
+  # --- Soccer ---
+  - key: epl
+    label: Premier League
+    path: soccer/eng.1
+    kind: soccer
+    enabled: true
+  - key: ucl
+    label: Champions League
+    path: soccer/uefa.champions
+    kind: soccer
+    enabled: true
+  - key: mls
+    label: MLS
+    path: soccer/usa.1
+    kind: soccer
+    enabled: true
+  - key: laliga
+    label: La Liga
+    path: soccer/esp.1
+    kind: soccer
+    enabled: false
+
+  # --- Individual sports (results only, no box-score standouts) ---
+  - key: f1
+    label: Formula 1
+    path: racing/f1
+    kind: racing
+    enabled: true
+  - key: pga
+    label: PGA Tour
+    path: golf/pga
+    kind: golf
+    enabled: true
+  - key: atp
+    label: ATP Tennis
+    path: tennis/atp
+    kind: tennis
+    enabled: true
+  - key: wta
+    label: WTA Tennis
+    path: tennis/wta
+    kind: tennis
+    enabled: true
+
+news:
+  # Leagues to pull headlines from, in priority order.
+  sources: [mlb, nfl, nba, wnba, nhl, cfb, epl]
+  max_stories: 12
+
+standouts:
+  # How many standout performances to surface on the dashboard.
+  max_shown: 12
+  # Minimum wow-score (0-100) required to appear at all.
+  min_score: 40
+
+output:
+  path: out/dashboard.html
+  timezone: America/Chicago
+  title: "Daily Sports Brief"
