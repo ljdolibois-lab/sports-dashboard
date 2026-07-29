@@ -27,6 +27,98 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s",
 log = logging.getLogger("dashboard")
 
 
+# Titles that are advice/fantasy/preview filler, not "what happened yesterday".
+# Used only to sort such stories to the bottom of the email digest (never the
+# main page), so the catch-up leads with actual news.
+_FLUFF_MARKERS = (
+    "fantasy", "lineup advice", "start 'em", "sit 'em", "start/sit", "waiver",
+    "betting", "odds", "parlay", "prop bet", "best bets", "picks",
+    "how to watch", "what to watch", "way-too-early", "mock draft",
+    "power ranking", "predictions", "preview", "primer",
+)
+
+
+def _is_fluff(story) -> bool:
+    t = (story.title or "").lower()
+    return any(m in t for m in _FLUFF_MARKERS)
+
+
+def _write_email_digest(env, cfg, date, tz, all_games, grouped, stories):
+    """Render the compact catch-up email to mail/email.html (+ a subject line).
+
+    Broad view only: yesterday's headlines and a handful of notable finals, each
+    linking back to the full dashboard. No standout cards, no images — the email
+    is a glance, the page is the detail.
+    """
+    site_url = cfg["output"].get("site_url", "")
+
+    # Lead with real news: float advice/fantasy/preview filler to the bottom.
+    # Stable partition keeps ESPN's within-group ordering otherwise.
+    stories = [s for s in stories if not _is_fluff(s)] + \
+              [s for s in stories if _is_fluff(s)]
+
+    # Notable finals: ranked teams first, then closest margins. Only games that
+    # actually carry a score (skips individual sports, which have no home/away).
+    scored = [g for g in all_games
+              if g.home.score is not None and g.away.score is not None]
+    scored.sort(key=lambda g: (not g.ranked, g.margin))
+    games = []
+    for g in scored[:6]:
+        hi, lo = ((g.home, g.away) if g.home.score >= g.away.score
+                  else (g.away, g.home))
+        games.append({
+            "league": g.league,
+            "winner": hi.name, "ws": hi.score,
+            "loser": lo.name, "ls": lo.score,
+            "draw": g.home.score == g.away.score,
+            "detail": g.note if g.note and g.note != "Final" else "",
+            "link": g.link,
+        })
+
+    league_names = list(grouped.keys())
+    if len(league_names) <= 3:
+        leagues_str = ", ".join(league_names)
+    elif league_names:
+        leagues_str = ", ".join(league_names[:3]) + f" +{len(league_names) - 3} more"
+    else:
+        leagues_str = ""
+
+    parts = []
+    if all_games:
+        parts.append(f"{len(all_games)} final{'' if len(all_games) == 1 else 's'}"
+                     + (f" across {leagues_str}" if leagues_str else ""))
+    if stories:
+        parts.append(f"{len(stories)} headline{'' if len(stories) == 1 else 's'}")
+    summary_line = " · ".join(parts) or "A quiet day on the slate yesterday."
+
+    email_html = env.get_template("email.html.j2").render(
+        title=cfg["output"].get("title", "Daily Sports Brief"),
+        date_human=date.strftime("%A, %B %-d, %Y"),
+        generated_at=datetime.now(tz).strftime("%-I:%M %p %Z"),
+        site_url=site_url,
+        summary_line=summary_line,
+        stories=stories[:7],
+        games=games,
+        more_games=max(0, len(all_games) - len(games)),
+    )
+
+    mail_dir = ROOT / "mail"
+    mail_dir.mkdir(parents=True, exist_ok=True)
+    (mail_dir / "email.html").write_text(email_html, encoding="utf-8")
+
+    # News-first subject line (not player names): "20 finals · <lead headline>".
+    subj = []
+    if all_games:
+        subj.append(f"{len(all_games)} finals")
+    if stories:
+        subj.append(stories[0].title)
+    subject = " · ".join(subj)[:120] or "your daily catch-up"
+    (mail_dir / "email_subject.txt").write_text(subject, encoding="utf-8")
+
+    log.info("wrote %s (%d headlines, %d notable scores)",
+             mail_dir / "email.html", len(stories[:7]), len(games))
+
+
 def build(cfg: dict, date: datetime, *, fetch_boxscores: bool = True) -> Path:
     ymd = date.strftime("%Y%m%d")
     leagues = [l for l in cfg["leagues"] if l.get("enabled", True)]
@@ -83,6 +175,12 @@ def build(cfg: dict, date: datetime, *, fetch_boxscores: bool = True) -> Path:
     arch = ROOT / "out" / "archive" / f"{date:%Y-%m-%d}.html"
     arch.parent.mkdir(parents=True, exist_ok=True)
     arch.write_text(html, encoding="utf-8")
+
+    # --- Compact email digest -------------------------------------------------
+    # A broad catch-up (headlines + a few notable scores + a link), NOT the whole
+    # page. Deliberately no standout player cards or photos. Written to mail/ so
+    # it is kept out of the Pages `out/` dir and never published.
+    _write_email_digest(env, cfg, date, tz, all_games, grouped, stories)
 
     log.info("wrote %s (%d games, %d standouts, %d stories)",
              out, len(all_games), len(top), len(stories))

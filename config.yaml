@@ -111,3 +111,6 @@ output:
   path: out/dashboard.html
   timezone: America/Chicago
   title: "Daily Sports Brief"
+  # Public URL of the published dashboard. Used by the catch-up email to link
+  # back to the full page.
+  site_url: "https://ljdolibois-lab.github.io/sports-dashboard/"

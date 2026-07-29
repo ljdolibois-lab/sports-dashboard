@@ -1,0 +1,101 @@
+{#- Compact catch-up email: headlines + a few notable scores + a link to the
+    full dashboard. Deliberately text-forward — NO player cards, NO photos.
+    Inline styles only; email clients strip <style> and external CSS. -#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>{{ title }} — {{ date_human }}</title>
+</head>
+<body style="margin:0;padding:0;background:#eef1f4;-webkit-text-size-adjust:100%;">
+  <!-- preheader (hidden preview text) -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#eef1f4;font-size:1px;line-height:1px;">{{ summary_line }} — yesterday in sports, in one glance.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef1f4;">
+    <tr><td align="center" style="padding:24px 12px;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+
+        <!-- ── header band ── -->
+        <tr><td style="background:#0b0d10;padding:26px 30px 22px;">
+          <div style="color:#8a93a1;font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;">Daily Sports Brief</div>
+          <div style="color:#ffffff;font-size:23px;font-weight:700;letter-spacing:-.02em;margin-top:6px;">{{ date_human }}</div>
+          <div style="color:#9aa4b2;font-size:14px;margin-top:9px;line-height:1.45;">{{ summary_line }}</div>
+        </td></tr>
+
+        <!-- ── top CTA ── -->
+        <tr><td style="padding:20px 30px 2px;">
+          <a href="{{ site_url }}" style="display:inline-block;background:#4ea1ff;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;">Open the full dashboard&nbsp;→</a>
+        </td></tr>
+
+        <!-- ── the big stories ── -->
+        <tr><td style="padding:26px 30px 0;">
+          <div style="font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#8a93a1;font-weight:700;border-bottom:1px solid #e7eaef;padding-bottom:9px;">The big stories</div>
+        </td></tr>
+        {% if stories %}
+          {% for s in stories %}
+          <tr><td style="padding:14px 30px;border-bottom:1px solid #f2f4f7;">
+            <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#4ea1ff;font-weight:700;">{{ s.league }}</div>
+            <a href="{{ s.link }}" style="color:#12161c;text-decoration:none;font-size:16px;font-weight:600;line-height:1.35;display:block;margin-top:3px;">{{ s.title }}</a>
+            {% if loop.index <= 3 and s.description %}
+            <div style="color:#5a6472;font-size:14px;line-height:1.5;margin-top:5px;">{{ s.description }}</div>
+            {% endif %}
+          </td></tr>
+          {% endfor %}
+        {% else %}
+          <tr><td style="padding:14px 30px;color:#5a6472;font-size:14px;">No major headlines pulled yesterday — the scoreboard is on the site.</td></tr>
+        {% endif %}
+
+        <!-- ── scores at a glance ── -->
+        {% if games %}
+        <tr><td style="padding:26px 30px 0;">
+          <div style="font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#8a93a1;font-weight:700;border-bottom:1px solid #e7eaef;padding-bottom:9px;">Scores at a glance</div>
+        </td></tr>
+          {% for g in games %}
+          <tr><td style="padding:11px 30px;border-bottom:1px solid #f2f4f7;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+              <td style="font-size:15px;color:#12161c;line-height:1.4;">
+                {% if g.draw %}
+                  {{ g.winner }} <span style="color:#5a6472;">{{ g.ws }}</span>,
+                  {{ g.loser }} <span style="color:#5a6472;">{{ g.ls }}</span>
+                  <span style="color:#8a93a1;">(draw)</span>
+                {% else %}
+                  <span style="font-weight:700;">{{ g.winner }}</span>
+                  <span style="font-weight:700;color:#178a5a;">{{ g.ws }}</span>,
+                  <span style="color:#3a4453;">{{ g.loser }} {{ g.ls }}</span>
+                {% endif %}
+              </td>
+              <td align="right" style="font-size:12px;color:#8a93a1;white-space:nowrap;padding-left:10px;">{{ g.league }}{% if g.detail %} · {{ g.detail }}{% endif %}</td>
+            </tr></table>
+          </td></tr>
+          {% endfor %}
+          {% if more_games %}
+          <tr><td style="padding:13px 30px 0;">
+            <a href="{{ site_url }}" style="color:#4ea1ff;text-decoration:none;font-size:14px;font-weight:600;">+ {{ more_games }} more final{{ 's' if more_games != 1 else '' }} on the site&nbsp;→</a>
+          </td></tr>
+          {% endif %}
+        {% endif %}
+
+        <!-- ── bottom CTA ── -->
+        <tr><td align="center" style="padding:28px 30px 24px;">
+          <a href="{{ site_url }}" style="display:inline-block;background:#4ea1ff;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:13px 26px;border-radius:10px;">See standout performances &amp; every score&nbsp;→</a>
+        </td></tr>
+
+        <!-- ── footer ── -->
+        <tr><td style="padding:18px 30px 28px;border-top:1px solid #e7eaef;">
+          <div style="color:#8a93a1;font-size:12px;line-height:1.55;">
+            Built {{ generated_at }} from ESPN public data. This is the quick catch-up — the standout performances, logos and full scoreboard live on the <a href="{{ site_url }}" style="color:#4ea1ff;text-decoration:none;">dashboard</a>.
+          </div>
+        </td></tr>
+
+      </table>
+
+      <div style="color:#9aa4b2;font-size:11px;margin-top:14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">Daily Sports Brief · rebuilt every morning</div>
+
+    </td></tr>
+  </table>
+</body>
+</html>

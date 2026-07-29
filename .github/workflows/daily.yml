@@ -52,14 +52,11 @@ jobs:
       - name: One-line digest for the email subject
         id: digest
         run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import re, pathlib
-          html = pathlib.Path("out/dashboard.html").read_text()
-          names = re.findall(r'<div class="pname">([^<]+)</div>', html)
-          games = len(re.findall(r'class="game"', html))
-          top = ", ".join(names[:3]) if names else "no standouts"
-          print(f"summary={games} finals · {top}")
-          PY
+          # The build writes a news-first subject line (lead headline, not
+          # player names) to mail/email_subject.txt. printf %s avoids the shell
+          # re-interpreting any $ or ` in a headline.
+          subject=$(cat mail/email_subject.txt)
+          printf 'summary=%s\n' "$subject" >> "$GITHUB_OUTPUT"
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
@@ -80,7 +77,9 @@ jobs:
           from: Sports Brief
           to: ${{ secrets.MAIL_TO }}
           subject: "Sports Brief — ${{ steps.digest.outputs.summary }}"
-          html_body: file://out/dashboard.html
+          # The compact catch-up digest, not the whole page: headlines + a few
+          # notable scores + links back to the dashboard.
+          html_body: file://mail/email.html
           convert_markdown: false
 
   deploy:

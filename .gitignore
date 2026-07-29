@@ -2,5 +2,6 @@
 cache/
 logs/
 out/archive/
+mail/
 __pycache__/
 *.pyc
