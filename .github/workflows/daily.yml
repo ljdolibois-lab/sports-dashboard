@@ -2,14 +2,22 @@ name: Daily sports brief
 
 on:
   schedule:
-    # 12:15 UTC. GitHub cron has no timezone and no DST, so this lands at
-    # 7:15am Central in summer and 6:15am Central in winter. For a page about
-    # yesterday, drifting an hour earlier is harmless.
+    # Goal: land in the inbox around 7am Central.
     #
-    # Note: GitHub's scheduler is best-effort and routinely runs 5-20 minutes
-    # late under load, and occasionally skips a slot entirely. Fine here. If
-    # you ever need punctuality, this is the wrong host.
-    - cron: "15 12 * * *"
+    # GitHub's free scheduler is best-effort and — for this repo — has been
+    # firing scheduled runs about 2h15m LATE (observed 2026-07-30 and -31: the
+    # old 12:15 UTC slot didn't actually start until ~14:30 UTC, so email hit
+    # at ~9:30am Central). So don't schedule at the target time; schedule early
+    # to absorb the delay, and use an odd, off-peak minute — congestion is
+    # worst at :00/:15/:30/:45.
+    #
+    #   10:07 UTC + ~2h15m typical delay  ≈ 12:22 UTC ≈ 7:22am Central (CDT)
+    #
+    # If GitHub ever runs it on time, it arrives ~5am — still waiting for you at
+    # breakfast, which is fine for a page about yesterday. No timezone/DST, so
+    # winter drifts an hour earlier. Exact-minute delivery isn't possible on a
+    # free scheduler; that would need an external trigger hitting the API.
+    - cron: "7 10 * * *"
   workflow_dispatch:        # lets you run it by hand from the Actions tab
 
 permissions:
