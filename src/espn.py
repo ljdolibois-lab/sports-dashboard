@@ -24,7 +24,11 @@ from typing import Any
 log = logging.getLogger(__name__)
 
 BASE = "https://site.api.espn.com/apis/site/v2/sports"
-UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 sports-dashboard/1.0"
+# Identify honestly as a bot. As of 2026-08-05 ESPN's edge started returning
+# 403 for browser-like "Mozilla/..." User-Agents coming from non-browser
+# clients (this blocked every request and failed the daily build). A plain,
+# non-browser UA is accepted; an empty UA is also rejected, so keep this set.
+UA = "sports-dashboard/1.0 (+https://github.com/ljdolibois-lab/sports-dashboard)"
 
 CACHE_DIR = Path(__file__).resolve().parent.parent / "cache"
 CACHE_TTL = 60 * 60 * 6  # 6h. Yesterday's finals never change, so cache hard.
